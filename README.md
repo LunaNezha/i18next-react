@@ -5,7 +5,7 @@
 
 This is a modern web application built using [Next.js](https://nextjs.org/) and [React](https://reactjs.org/). The project is designed to provide a seamless user experience with internationalization support powered by [i18next-react](https://react.i18next.com/). Styled using [Tailwind CSS](https://tailwindcss.com/) with [PostCSS](https://postcss.org/), it ensures responsiveness and aesthetic consistency. The project leverages [TypeScript](https://www.typescriptlang.org/) for type safety and uses components from [shadcn](https://shadcn.dev/) for a modular and extensible design system.
 
-![App Screenshot](assets/images/screenshot.png)
+![App Screenshot](public/images/screenshot.png)
 
 ## 🛠 **Features**
 
@@ -31,13 +31,13 @@ This is a modern web application built using [Next.js](https://nextjs.org/) and 
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/LunaNezha/i18next-react
 ```
 
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd i18next-react
 ```
 
 Install dependencies
