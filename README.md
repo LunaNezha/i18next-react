@@ -52,6 +52,22 @@ Start the server
   npm run dev
 ```
 
+Adding Translations
+
+```bash
+app/i18n/locales/
+   en/
+      common.json
+   fr/
+      common.json
+```
+
+Generate the translations after adding new one
+
+```bash
+npm run interface
+```
+
 ## ✅ **Running Tests**
 
 To run tests, run the following command
