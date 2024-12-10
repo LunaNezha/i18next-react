@@ -1,0 +1,163 @@
+/* ====================== iran yekan ========================== */
+@font-face {
+  font-family: "Iranyekan";
+  font-style: normal;
+  font-weight: bold;
+  src: url("../fonts/IranYekan/eot/bold.eot");
+  src:
+    url("../fonts/IranYekan/eot/bold.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/IranYekan/woff/bold.woff") format("woff"),
+    url("../fonts/IranYekan/ttf/bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Iranyekan";
+  font-style: normal;
+  font-weight: 100;
+  src: url("../fonts/IranYekan/eot/thin.eot");
+  src:
+    url("../fonts/IranYekan/eot/thin.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/IranYekan/woff/thin.woff") format("woff"),
+    url("../fonts/IranYekan/ttf/thin.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Iranyekan";
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/IranYekan/eot/light.eot");
+  src:
+    url("../fonts/IranYekan/eot/light.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/IranYekan/woff/light.woff") format("woff"),
+    url("../fonts/IranYekan/ttf/light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Iranyekan";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/IranYekan/eot/regular.eot");
+  src:
+    url("../fonts/IranYekan/eot/regular.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/IranYekan/woff/regular.woff") format("woff"),
+    url("../fonts/IranYekan/ttf/regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Iranyekan";
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/IranYekan/eot/medium.eot");
+  src:
+    url("../fonts/IranYekan/eot/medium.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/IranYekan/woff/medium.woff") format("woff"),
+    url("../fonts/IranYekan/ttf/medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Iranyekan";
+  font-style: normal;
+  font-weight: 800;
+  src: url("../fonts/IranYekan/eot/extrabold.eot");
+  src:
+    url("../fonts/IranYekan/eot/extrabold.eot?#iefix")
+      format("embedded-opentype"),
+    url("../fonts/IranYekan/woff/extrabold.woff") format("woff"),
+    url("../fonts/IranYekan/ttf/extrabold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Iranyekan";
+  font-style: normal;
+  font-weight: 850;
+  src: url("../fonts/IranYekan/eot/black.eot");
+  src:
+    url("../fonts/IranYekan/eot/black.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/IranYekan/woff/black.woff") format("woff"),
+    url("../fonts/IranYekan/ttf/black.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Iranyekan";
+  font-style: normal;
+  font-weight: 900;
+  src: url("../fonts/IranYekan/eot/extrablack.eot");
+  src:
+    url("../fonts/IranYekan/eot/extrablack.eot?#iefix")
+      format("embedded-opentype"),
+    url("../fonts/IranYekan/woff/extrablack.woff") format("woff"),
+    url("../fonts/IranYekan/ttf/extrablack.ttf") format("truetype");
+}
+
+/* =================== Montserrat =================== */
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-ExtraBold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

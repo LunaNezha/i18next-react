@@ -1,0 +1,9 @@
+{
+  "app_title": "I18n Application",
+  "app_complete_title": "I18n with React and Next.js",
+  "change_language": "Change Language",
+  "header": {
+    "title": "Connect Without Borders, Break the Language Barrier",
+    "description": "Enjoy seamless experiences with content available in your preferred language. Perfect for businesses, education, and individuals seeking a world without language limits."
+  }
+}

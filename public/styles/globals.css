@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply rtl:font-iranyekan ltr:font-montserrat;
+
+    &[dir="rtl"] {
+      font-family: "Iranyekan", sans-serif;
+    }
+
+    &[dir="ltr"] {
+      font-family: "Montserrat", sans-serif;
+    }
+  }
+
+  body {
+    @apply rtl:font-iranyekan ltr:font-montserrat;
+  }
+
+  i {
+    @apply flex;
+  }
+}
