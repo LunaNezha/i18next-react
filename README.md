@@ -57,9 +57,9 @@ Adding Translations
 ```bash
 app/i18n/locales/
    en/
-      common.json
-   fr/
-      common.json
+      translations.json
+   fa/
+      translations.json
 ```
 
 Generate the translations after adding new one
