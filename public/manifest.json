@@ -1,50 +1,24 @@
 {
-  "name": "Ferdosi Pharmacy",
-  "short_name": "Ferdosi",
-  "theme_color": "#FFFFFF",
-  "background_color": "#FFFFFF",
+  "name": "Locale \u2014 i18n playground",
+  "short_name": "Locale",
+  "description": "Explore translations, bidirectional layouts, and localized formats.",
+  "theme_color": "#216a48",
+  "background_color": "#f8f9f6",
   "scope": "/",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
   "icons": [
     {
-      "src": "./icons/android-chrome-192x192.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "./icons/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "./icons/favicon-16x16.png",
-      "sizes": "16x16",
-      "type": "image/png"
-    },
-    {
-      "src": "./icons/favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png"
-    },
-    {
-      "src": "./icons/mstile-150x150.png",
-      "sizes": "150x150",
-      "type": "image/png"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "./icons/android-chrome-512x512.png",
+      "src": "/icon.png",
       "sizes": "512x512",
       "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./icons/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "purpose": "any"
     }
   ]
 }

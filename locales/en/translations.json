@@ -1,0 +1,117 @@
+{
+  "app_title": "I18n Application",
+  "app_complete_title": "I18n with React and Next.js",
+  "change_language": "Change Language",
+  "current_language": "Current language",
+  "header": {
+    "title": "Connect Without Borders, Break the Language Barrier",
+    "description": "Enjoy seamless experiences with content available in your preferred language. Perfect for businesses, education, and individuals seeking a world without language limits."
+  },
+  "site": {
+    "skip": "Skip to content",
+    "home": "Locale home",
+    "navigation": "Main navigation",
+    "playground": "Playground",
+    "integration": "How it works",
+    "github": "GitHub",
+    "builtWith": "Made with good primitives",
+    "footer": "Thoughtfully built. Globally minded.",
+    "openSource": "Explore the source"
+  },
+  "hero": {
+    "badge": "A little template. A world of possibilities.",
+    "badgeEnd": "Open source",
+    "title": "One experience.",
+    "titleAccent": "Every language.",
+    "description": "Make your next idea feel at home, anywhere. A thoughtfully crafted Next.js starter for translations, adaptable layouts, and all the little local details.",
+    "primary": "Explore the playground",
+    "secondary": "View on GitHub",
+    "benefitOne": "Type-safe by default",
+    "benefitTwo": "Server & client ready",
+    "benefitThree": "Naturally bidirectional"
+  },
+  "demo": {
+    "workspaceLabel": "Interactive internationalization playground",
+    "workspaceTitle": "The language playground",
+    "live": "Live",
+    "preview": "Live preview",
+    "source": "Source code",
+    "liveLabel": "Your words, with a local touch",
+    "yourApp": "Your application",
+    "defaultName": "Alex",
+    "friend": "friend",
+    "greeting": "Welcome back, {{name}}.",
+    "welcomeDescription": "Your next big idea is ready for the world. Let’s make everyone feel welcome.",
+    "synced": "Translated. Typed. Ready to go.",
+    "nameLabel": "Make it yours. Try your name.",
+    "namePlaceholder": "e.g. Alex",
+    "nameHint": "Try a name. The greeting updates as you type.",
+    "codeHint": "One hook. The right words, in the right place.",
+    "rightToLeft": "Right-to-left layout",
+    "leftToRight": "Left-to-right layout",
+    "serverReady": "Server-rendered, client-ready"
+  },
+  "features": {
+    "eyebrow": "More than translated words",
+    "title": "Small details. Global impact.",
+    "description": "A few things that change. An experience that stays familiar.",
+    "text": {
+      "title": "Words that keep up.",
+      "description": "From a warm welcome to a full shopping bag. Your copy adapts, right down to the plural.",
+      "cart": "Your shopping bag",
+      "items": "{{count}} items, ready to go",
+      "items_one": "{{count}} item, ready to go",
+      "items_other": "{{count}} items, ready to go",
+      "increase": "Add one item",
+      "decrease": "Remove one item",
+      "note": "Give the counter a try"
+    },
+    "direction": {
+      "title": "A natural sense of direction.",
+      "description": "Not just aligned differently. A layout that feels native, from the first glance.",
+      "project": "Your next project",
+      "projectHint": "Made for a wider world",
+      "controlLabel": "Preview layout direction",
+      "auto": "Auto",
+      "note": "Same component. A new perspective."
+    },
+    "format": {
+      "title": "It’s all in the details.",
+      "description": "Dates, numbers, and currencies. Familiar formats make a world of difference.",
+      "date": "Date",
+      "number": "Number",
+      "currency": "Amount",
+      "selectCurrency": "Currency format",
+      "usd": "US dollar",
+      "eur": "Euro",
+      "jpy": "Japanese yen",
+      "note": "A formatting demo, not currency conversion."
+    }
+  },
+  "code": {
+    "eyebrow": "Less setup. More possibility.",
+    "title": "Feels simple.",
+    "titleAccent": "Because it should.",
+    "description": "No black boxes. Just small, composable pieces you can understand, copy, and make your own.",
+    "benefitOne": "One shared source of truth for every locale",
+    "benefitTwo": "Isolated instances, consistent first renders",
+    "benefitThree": "Plain JSON. Familiar hooks. Your components.",
+    "repository": "Take a look under the hood",
+    "ready": "Copy. Paste. Make it yours.",
+    "examplesLabel": "Internationalization code examples",
+    "client": "Client hook",
+    "server": "Server component",
+    "formatting": "Formatting",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copying": "Copying…",
+    "copyLabel": "Copy code from {{filename}}",
+    "copyError": "Clipboard unavailable. Code selected: press Ctrl+C or Cmd+C to copy."
+  },
+  "theme": {
+    "label": "Choose color theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  }
+}

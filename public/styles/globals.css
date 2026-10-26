@@ -3,8 +3,52 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --canvas: 248 249 246;
+    --surface: 255 255 255;
+    --ink: 29 43 36;
+    --subtle: 99 111 103;
+    --line: 222 228 220;
+    --accent: 33 106 72;
+    --accent-soft: 232 241 231;
+    --accent-foreground: 255 255 255;
+    color-scheme: light;
+  }
+
+  .dark {
+    --canvas: 14 21 17;
+    --surface: 22 31 25;
+    --ink: 234 240 232;
+    --subtle: 161 178 164;
+    --line: 48 64 52;
+    --accent: 163 217 166;
+    --accent-soft: 35 55 40;
+    --accent-foreground: 17 38 23;
+    color-scheme: dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      --canvas: 14 21 17;
+      --surface: 22 31 25;
+      --ink: 234 240 232;
+      --subtle: 161 178 164;
+      --line: 48 64 52;
+      --accent: 163 217 166;
+      --accent-soft: 35 55 40;
+      --accent-foreground: 17 38 23;
+      color-scheme: dark;
+    }
+  }
+
+  * {
+    @apply border-line;
+  }
+
   html {
-    @apply rtl:font-iranyekan ltr:font-montserrat;
+    @apply ltr:font-montserrat rtl:font-iranyekan;
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
 
     &[dir="rtl"] {
       font-family: "Iranyekan", sans-serif;
@@ -16,10 +60,37 @@
   }
 
   body {
-    @apply rtl:font-iranyekan ltr:font-montserrat;
+    @apply bg-canvas text-ink antialiased ltr:font-montserrat rtl:font-iranyekan;
+    margin: 0;
   }
 
-  i {
-    @apply flex;
+  ::selection {
+    background: rgb(var(--accent) / 0.2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-canvas;
+  }
+
+  .demo-card {
+    @apply min-w-0 rounded-2xl border border-line bg-surface p-6 transition-colors duration-200 motion-reduce:transition-none;
+  }
+
+  .hero-grid {
+    background-image: linear-gradient(
+        rgb(var(--line) / 0.45) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgb(var(--line) / 0.45) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(to bottom, black, transparent);
   }
 }

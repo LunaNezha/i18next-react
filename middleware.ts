@@ -1,68 +1,44 @@
-import { NextResponse, NextRequest } from "next/server";
-import acceptLanguage from "accept-language";
-import { fallbackLng, languages, cookieName } from "./app/i18n/settings";
-
-acceptLanguage.languages(languages);
+import { NextResponse, type NextRequest } from "next/server";
+import { cookieName, isLocale } from "@/lib/i18n/config";
+import { getLocalePathname } from "@/lib/i18n/routing";
+import { getPreferredLocale } from "@/lib/i18n/negotiation";
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest|workbox-.*).*)",
+    {
+      source: "/((?!api(?:/|$)|_next(?:/|$)|.*\\.[^/]+$).*)",
+      missing: [
+        { type: "header", key: "next-router-prefetch" },
+        { type: "header", key: "purpose", value: "prefetch" },
+      ],
+    },
   ],
 };
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+export function middleware(request: NextRequest) {
+  const segment = request.nextUrl.pathname.split("/")[1];
 
-  if (
-    pathname.includes("icon") ||
-    pathname.includes("chrome") ||
-    pathname === "/manifest.json"
-  ) {
-    return NextResponse.next();
-  }
-
-  let lng: string | undefined | null;
-
-  // Check if language is set in cookies
-  if (req.cookies.has(cookieName)) {
-    lng = acceptLanguage.get(req.cookies.get(cookieName)?.value);
-  }
-
-  // If not in cookies, check Accept-Language header
-  if (!lng) {
-    lng = acceptLanguage.get(req.headers.get("Accept-Language"));
-  }
-
-  // If no language is detected, use the fallback language
-  if (!lng) {
-    lng = fallbackLng;
-  }
-
-  // Handle root path explicitly
-  if (pathname === "/") {
-    return NextResponse.redirect(
-      new URL(`/${fallbackLng}${pathname}`, req.url),
-    );
-  }
-
-  // Redirect if the language in the path is not supported
-  if (
-    !languages.some((loc) => pathname.startsWith(`/${loc}`)) &&
-    !pathname.startsWith("/_next")
-  ) {
-    return NextResponse.redirect(new URL(`/${lng}${pathname}`, req.url));
-  }
-
-  // Set the language cookie based on the referer
-  if (req.headers.has("referer")) {
-    const refererUrl = new URL(req.headers.get("referer") || "");
-    const lngInReferer = languages.find((l) =>
-      refererUrl.pathname.startsWith(`/${l}`),
-    );
+  if (isLocale(segment)) {
     const response = NextResponse.next();
-    if (lngInReferer) response.cookies.set(cookieName, lngInReferer);
+    if (request.cookies.get(cookieName)?.value !== segment) {
+      response.cookies.set(cookieName, segment, {
+        path: "/",
+        sameSite: "lax",
+        secure: request.nextUrl.protocol === "https:",
+      });
+    }
     return response;
   }
 
-  return NextResponse.next();
+  const lng = getPreferredLocale(
+    request.cookies.get(cookieName)?.value,
+    request.headers.get("Accept-Language"),
+  );
+  const url = request.nextUrl.clone();
+  url.pathname = getLocalePathname(url.pathname, lng);
+
+  const response = NextResponse.redirect(url);
+  response.headers.set("Vary", "Cookie, Accept-Language");
+  response.headers.set("Cache-Control", "private, no-store");
+  return response;
 }

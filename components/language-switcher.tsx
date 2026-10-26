@@ -1,72 +1,100 @@
 "use client";
 
+import { CheckIcon, ChevronDown, Globe2 } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useTranslation } from "@/hooks/use-translation";
+import {
+  cookieName,
+  languages,
+  localeDetails,
+  isLocale,
+  fallbackLng,
+} from "@/lib/i18n/config";
+import { getLocalePathname } from "@/lib/i18n/routing";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { useTranslation } from "@/app/i18n/client";
-import { languages } from "@/app/i18n/settings";
-import Link from "next/link";
-import { EN, ENGLISH, FA, PERSIAN } from "@/constants/langs.const";
-import Image from "next/image";
 
-import IranFlag from "@/public/images/iran.png";
-import UnitedStatesFlag from "@/public/images/united-states.png";
-import { LanguagesIcon } from "lucide-react";
-
-type Props = {
-  params: {
-    lng: string;
-  };
-};
-
-const LanguageSwitcher = ({ params }: Props) => {
-  const { i18n, t } = useTranslation(params.lng, "translations");
+export default function LanguageSwitcher() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { t, i18n } = useTranslation();
+  const segment = pathname.split("/")[1];
+  const lng = isLocale(segment) ? segment : fallbackLng;
+  const contentLocale = isLocale(i18n.resolvedLanguage)
+    ? i18n.resolvedLanguage
+    : fallbackLng;
+  const query = searchParams.toString();
 
   return (
-    <DropdownMenu dir={i18n.language === FA ? "rtl" : "ltr"}>
+    <DropdownMenu dir={localeDetails[contentLocale].direction}>
       <DropdownMenuTrigger asChild>
         <Button
+          type="button"
           variant="outline"
-          size={"lg"}
-          aria-label="language-switcher"
-          className="h-auto rounded-xl py-4"
+          aria-label={t("change_language")}
+          className="gap-2 rounded-xl px-3 text-xs sm:px-4"
         >
-          <LanguagesIcon />
-          <span>{t("change_language")}</span>
+          <Globe2 className="text-subtle" aria-hidden="true" />
+          <span lang={lng}>{localeDetails[lng].label}</span>
+          <ChevronDown className="size-3 text-subtle" aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
-
-      <DropdownMenuContent align="start">
-        {languages.map((item, index) => {
-          return (
-            <DropdownMenuItem key={index}>
-              <Link
-                href={`/${item}`}
-                className="flex items-center gap-2"
-                passHref
-              >
-                <Image
-                  alt="flag"
-                  src={item === FA ? IranFlag : UnitedStatesFlag}
-                  className="size-5 object-contain"
-                />
-                {item === FA && (
-                  <span className="font-iranyekan">{PERSIAN}</span>
-                )}
-                {item === EN && (
-                  <span className="font-montserrat">{ENGLISH}</span>
-                )}
-              </Link>
-            </DropdownMenuItem>
-          );
-        })}
+      <DropdownMenuContent
+        align="start"
+        aria-label={t("change_language")}
+        className="motion-reduce:data-[state=closed]:animate-none motion-reduce:data-[state=open]:animate-none"
+      >
+        {languages.map((locale) => (
+          <DropdownMenuItem key={locale} asChild>
+            <Link
+              href={`${getLocalePathname(pathname, locale)}${query ? `?${query}` : ""}`}
+              hrefLang={locale}
+              dir={localeDetails[locale].direction}
+              aria-current={locale === lng ? "page" : undefined}
+              prefetch={false}
+              onClick={(event) => {
+                if (
+                  event.defaultPrevented ||
+                  event.button !== 0 ||
+                  event.metaKey ||
+                  event.ctrlKey ||
+                  event.shiftKey ||
+                  event.altKey
+                )
+                  return;
+                try {
+                  document.cookie = `${cookieName}=${locale}; Path=/; SameSite=Lax${window.location.protocol === "https:" ? "; Secure" : ""}`;
+                } catch {
+                  return;
+                }
+              }}
+              className={`min-h-12 cursor-pointer justify-between gap-6 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent ${locale === "fa" ? "font-iranyekan" : "font-montserrat"}`}
+            >
+              <span className="flex items-center gap-3">
+                <span
+                  aria-hidden="true"
+                  className="rounded border border-line px-1.5 py-1 font-mono text-[10px] uppercase text-subtle"
+                >
+                  {locale}
+                </span>
+                <span lang={locale}>{localeDetails[locale].label}</span>
+              </span>
+              {locale === lng && (
+                <>
+                  <CheckIcon aria-hidden="true" />
+                  <span className="sr-only">{t("current_language")}</span>
+                </>
+              )}
+            </Link>
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
-
-export default LanguageSwitcher;
+}
