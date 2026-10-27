@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -17,13 +18,19 @@ import {
   ShowcaseCards,
 } from "@/components/demo/showcase";
 import { getTranslation } from "@/lib/i18n/server";
-import { fallbackLng, isLocale } from "@/lib/i18n/config";
+import { fallbackLng, isLocale, languages } from "@/lib/i18n/config";
 import { getResources } from "@/lib/i18n/resources";
 import { getDemoFormats } from "@/lib/i18n/format";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const repository = "https://github.com/LunaNezha/i18next-react";
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return languages.map((lng) => ({ lng }));
+}
 
 export default async function Home({ params }: { params: { lng: string } }) {
   const { lng } = params;
@@ -50,7 +57,7 @@ export default async function Home({ params }: { params: { lng: string } }) {
       </div>
 
       <header className="mx-auto flex min-h-24 max-w-[1184px] items-center justify-between gap-4 px-5 sm:px-8">
-        <a
+        <Link
           href={`/${lng}`}
           aria-label={t("site.home")}
           className="focus-ring flex shrink-0 items-center gap-2.5 rounded-lg"
@@ -71,7 +78,7 @@ export default async function Home({ params }: { params: { lng: string } }) {
           >
             / i18n
           </span>
-        </a>
+        </Link>
         <nav
           aria-label={t("site.navigation")}
           className="hidden items-center gap-7 text-xs font-medium text-subtle md:flex"

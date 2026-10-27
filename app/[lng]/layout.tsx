@@ -4,10 +4,10 @@ import "@/public/styles/font-families.css";
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import {
-  languages,
-  isLocale,
-  localeDetails,
   fallbackLng,
+  isLocale,
+  languages,
+  localeDetails,
 } from "@/lib/i18n/config";
 import { getResources } from "@/lib/i18n/resources";
 import { I18nProvider } from "@/components/providers/i18n-provider";
@@ -36,7 +36,13 @@ export const viewport: Viewport = {
   ],
 };
 
+// `output: "export"` must know every value for this route segment at build time.
+// Keeping this on the `[lng]` layout makes it apply to every route below it.
 export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return languages.map((lng) => ({ lng }));
+}
 
 type Props = {
   children: React.ReactNode;
@@ -44,10 +50,6 @@ type Props = {
     lng: string;
   };
 };
-
-export async function generateStaticParams() {
-  return languages.map((lng) => ({ lng }));
-}
 
 export default async function RootLayout(props: Readonly<Props>) {
   const { children, params } = props;

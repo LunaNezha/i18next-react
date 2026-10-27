@@ -62,9 +62,9 @@ persists across locale navigation.
 - **Isolated i18n instances:** server rendering does not change a shared language
   singleton; each mounted client provider owns its instance.
 - **Hydration consistency:** the server passes the selected locale and its resources
-  to the client provider, including the Persian fallback dictionary.
-- **Locale negotiation:** locale-prefixed URLs take precedence; unprefixed URLs use
-  the language cookie, then `Accept-Language`, then Persian.
+  to the client provider, including the English fallback dictionary.
+- **Strict English fallback:** locale-prefixed URLs take precedence; the root and
+  unsupported locale URLs redirect to `/en/`, regardless of cookies or browser language.
 - **RTL/LTR support:** the root document and language menu use the locale direction.
 - **Typed translation keys:** TypeScript derives keys from the English JSON file.
 - **Reusable UI:** Tailwind CSS and editable shadcn/ui primitives backed by Radix UI.
@@ -121,8 +121,21 @@ npm run dev
 Open <http://localhost:3000/en> for English or <http://localhost:3000/fa> for Persian.
 No environment variables or external translation services are required.
 
-Visiting `/` negotiates a locale. Without a supported cookie or browser language,
-it redirects to `/fa`. Visit an explicit locale URL for a deterministic result.
+Visiting `/` always redirects to `/en/`. Unsupported locale paths such as `/de/`
+also redirect to `/en/`. Explicit `/fa/` visits remain Persian.
+
+For GitHub Pages, build with `GITHUB_PAGES=true npm run build`. This sets
+`basePath` to `/i18next-react`; ordinary local builds and development use no prefix.
+`trailingSlash: true` exports locale directories with `index.html` files. The
+workflow runs the npm build lifecycle, including the postbuild fallback generator.
+Do not use `npx next build` for deployment: it skips that generator.
+
+GitHub Pages cannot run middleware. The exported root page redirects in the browser
+(and includes a no-JavaScript meta refresh). The generated `out/404.html` redirects
+unsupported locale prefixes to `/i18next-react/en/`, preserving the query and hash.
+Missing pages under supported locales keep their 404 behavior. The 404 fallback
+requires JavaScript for automatic navigation and includes an English link otherwise;
+the original missing URL returns HTTP 404 before browser navigation.
 
 > `npm ci` installs the committed dependency graph and replaces `node_modules`.
 > If `npm ls --depth=0` reports invalid versions, reconcile the installation before
@@ -185,7 +198,6 @@ it redirects to `/fa`. Visit an explicit locale URL for a deterministic result.
 │   ├── i18next.d.ts                  # Strict i18next module augmentation
 │   └── react.d.ts                    # React 18 server cache type declarations
 ├── components.json                  # shadcn/ui aliases and settings
-├── middleware.ts                    # Locale negotiation and cookie persistence
 ├── next.config.mjs
 ├── package.json
 ├── package-lock.json
@@ -201,15 +213,15 @@ server loading remain independent of that tree.
 
 As the application grows, add domain-specific code under `features/<domain>/`
 when there is actual domain logic to group. Do not create empty folders or make
-unrelated screens depend on each other. Keep `middleware.ts` at the project root
-for this Next.js 14 setup.
+unrelated screens depend on each other. This static export has no middleware.
 
 ## How Internationalization Works
 
-1. `middleware.ts` ignores API routes, Next.js internals, and paths ending in a
-   file extension. A supported first path segment is the authoritative locale.
-2. For an unprefixed path, middleware checks the `i18next` cookie, negotiates the
-   browser header, and falls back to `fa`. Redirects retain query parameters.
+1. `app/[lng]/page.tsx` exports `generateStaticParams`, generating `en` and `fa`
+   from the central locale list. `dynamicParams = false` prevents on-demand routes.
+2. `app/(entry)/page.tsx` handles `/` with a browser redirect to English, retaining
+   the configured base path, query parameters, and hash. GitHub Pages serves the
+   generated `404.html` fallback for unsupported locale prefixes.
 3. The localized layout rejects unsupported locale parameters, loads only the
    selected and fallback dictionaries, and sets `<html lang>` and `<html dir>`.
 4. `getTranslation(lng)` creates an isolated i18next instance. React `cache`
@@ -218,10 +230,8 @@ for this Next.js 14 setup.
    its instance when locale or resources change. It does not register a global
    react-i18next instance. Hooks require an explicit provider rather than falling
    back to shared state. The layout's locale key also resets its localized subtree.
-6. The language switcher links to the equivalent localized route. Explicit locale
-   visits persist the preference; prefetch requests do not update that cookie.
-   Prefetch exclusion happens in the middleware matcher because Next.js 14 strips
-   internal App Router headers before exposing the request to the middleware body.
+6. The language switcher links to the equivalent localized route and saves a cookie
+   when clicked. The URL controls the language; the root always selects English.
 
 The fallback dictionary is required: failed loading or invalid fallback content
 throws a descriptive server error instead of rendering translation keys. A failed
@@ -229,8 +239,7 @@ or malformed selected dictionary uses the validated fallback for that request.
 Server and client receive the same bundle, preventing a fallback-induced hydration
 mismatch. When the selected dictionary is entirely unavailable, the document and
 menu use the fallback content's language and direction while retaining the requested
-URL. Negotiated redirects are private and non-cacheable to avoid sharing a
-user's language preference through a CDN.
+URL. Root redirects do not negotiate a language from cookies or browser headers.
 
 The single default namespace is **`translations`**, matching the JSON filenames.
 The URL, rather than browser detection inside components, controls the language.
@@ -245,7 +254,8 @@ For an existing **Next.js 14 App Router** application, copy:
 
 - `lib/i18n/`, `locales/`, and `types/`.
 - `components/providers/i18n-provider.tsx` and `hooks/use-translation.ts`.
-- `middleware.ts`, merging its behavior with any existing middleware.
+- `app/(entry)/` for the root redirect and `scripts/create-static-fallback.mjs`
+  for the static host fallback; configure its postbuild hook in `package.json`.
 
 Install the runtime dependencies used by the core:
 
@@ -395,7 +405,7 @@ For ordinary internal links, include the locale, with `Link` imported from `next
 
 Update matching keys in `locales/en/translations.json` and
 `locales/fa/translations.json`, then run `npm run typecheck`. The English file is
-the canonical schema, while Persian remains the runtime fallback. The loader's
+the canonical schema and runtime fallback. The loader's
 TypeScript constraint checks that each dictionary supplies the canonical structure.
 `npm run check:translations` also checks exact key parity, rejects empty or
 whitespace-only strings, and rejects invalid JSON shapes. It runs automatically
@@ -411,7 +421,7 @@ objects, not array-valued translations or `returnObjects` content.
 4. Register its dynamic JSON import in `lib/i18n/resources.ts`.
 5. Verify the new URL, fallback behavior, menu, and document direction.
 
-The layout's `generateStaticParams` and switcher read the central locale list.
+The page's `generateStaticParams` and switcher read the central locale list.
 To change the fallback, update `fallbackLng`; it must remain a supported locale.
 
 ### Add a Namespace
@@ -439,8 +449,8 @@ that optional output.
 | `<LanguageSwitcher params={{ lng }} />`                         | `<LanguageSwitcher />` inside Suspense                               |
 | `constants/langs.const.ts` and `enums/directions.enum.ts`       | `languages`, `Locale`, and `localeDetails` in `lib/i18n/config.ts`   |
 
-Unused path/local-storage constants are removed. Locale preferences use the
-`i18next` cookie; there is no separate local-storage source of truth. The unused browser detector, backend adapter, language-negotiation, and cookie
+Unused path/local-storage constants are removed. The URL is the source of truth;
+the language switcher also saves the `i18next` cookie. The unused browser detector, backend adapter, language-negotiation, and cookie
 packages have also been removed from the dependency manifest and lockfile.
 Translation-interface generation and formatting tools are development dependencies.
 
@@ -475,15 +485,15 @@ See [visual asset maintenance](docs/visual-assets.md) for regeneration commands.
 | `npm run lint`               | Run the Next.js 14 ESLint integration            |
 | `npm run format:check`       | Check repository formatting with Prettier        |
 | `npm run build`              | Create a production build                        |
-| `npm start`                  | Serve a completed production build               |
+| `npm start`                  | Not supported with static export; serve `out/`               |
 | `npm run interface`          | Export an optional standalone resource interface |
 
 There is no automated test runner or `npm test` script configured. Before opening
 a pull request, run typecheck, lint, and build, and manually verify:
 
 - `/en` and `/fa` render the correct strings and document direction.
-- `/` respects a supported cookie, then the browser language, then Persian.
-- `/about?source=demo` redirects without losing `source=demo` (add the page first).
+- `/` redirects to English even with a Persian cookie or browser language.
+- On the static host, `/de/?source=demo` redirects to `/en/?source=demo`.
 - Switching a nested route retains its path and query parameters.
 - Unsupported locale prefixes are not mistaken for supported ones.
 - `/api`, `/_next`, images, fonts, and other file assets are not localized.
@@ -493,10 +503,9 @@ a pull request, run typecheck, lint, and build, and manually verify:
   44px-high touch targets; test Tab, Enter/Space, arrow keys, and Escape.
 - No hydration warnings appear when navigating between locales.
 
-Paths ending in a file extension bypass locale middleware. Adjust the matcher if
-your application deliberately uses dotted page slugs. This routing setup needs a
-Next.js server; static export does not run middleware and requires a different
-locale-entry strategy.
+There is no middleware. Both development and static hosting use the root browser
+redirect. GitHub Pages additionally uses the postbuild `404.html` fallback;
+`next dev` uses Next.js's normal 404 handling for unknown paths.
 
 ## Contributing
 

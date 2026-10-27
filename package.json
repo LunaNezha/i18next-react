@@ -6,6 +6,7 @@
     "dev": "next dev",
     "prebuild": "npm run check:translations",
     "build": "next build",
+    "postbuild": "node scripts/create-static-fallback.mjs",
     "start": "next start",
     "lint": "next lint",
     "pretypecheck": "npm run check:translations",

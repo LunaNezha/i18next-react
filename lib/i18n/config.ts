@@ -1,7 +1,7 @@
 export const languages = ["fa", "en"] as const;
 export type Locale = (typeof languages)[number];
 
-export const fallbackLng = "fa" satisfies Locale;
+export const fallbackLng = "en" satisfies Locale;
 export const defaultNS = "translations";
 export const cookieName = "i18next";
 
